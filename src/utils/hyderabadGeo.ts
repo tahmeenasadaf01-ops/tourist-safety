@@ -69,6 +69,24 @@ export const HYDERABAD_HOTSPOTS: HyderabadHotspot[] = [
     coordinates: [17.4156, 78.4342],
     area: "West Zone / Commercial",
     isHighRisk: false
+  },
+  {
+    name: "Ananthagiri Hills Ghat Road & Viewpoint",
+    coordinates: [17.3115, 77.8654],
+    area: "Vikarabad Eco-Tourism Hills",
+    isHighRisk: true
+  },
+  {
+    name: "Gandipet Lake & Osman Sagar Eco-Greenway",
+    coordinates: [17.3871, 78.3039],
+    area: "Gandipet Green Belt",
+    isHighRisk: false
+  },
+  {
+    name: "Srisailam Forest Tiger Corridor & Ghat Pass",
+    coordinates: [16.0740, 78.8680],
+    area: "Nallamala Forest & Hill Highway",
+    isHighRisk: true
   }
 ];
 
@@ -155,6 +173,30 @@ export const HYDERABAD_GEOFENCES: GeofenceZone[] = [
     advisory: "Pedestrian only zone. Rapid action motorcycle patrol on perimeter duty.",
     level: "SAFE_ZONE",
     colorHex: "#3b82f6",
+    activeIncidentsCount: 0
+  },
+  {
+    id: "geo-hyd-08",
+    name: "Ananthagiri Hills Ghat Road & Misty Hairpin Zone",
+    type: "ACCIDENT_PRONE",
+    areaName: "Vikarabad Green Hills Corridor",
+    center: [17.3115, 77.8654],
+    radiusMeters: 1400,
+    advisory: "Dense forest hairpin curves and sudden fog. Speed advisory 25 km/h. Eco-safety patrol on standby.",
+    level: "WARNING",
+    colorHex: "#10b981",
+    activeIncidentsCount: 1
+  },
+  {
+    id: "geo-hyd-09",
+    name: "Gandipet Lake & Osman Sagar Scenic Eco-Corridor",
+    type: "SAFE_ZONE",
+    areaName: "Gandipet Water & Forest Conservation",
+    center: [17.3871, 78.3039],
+    radiusMeters: 1100,
+    advisory: "Scenic green recreation sanctuary. Strict zero-littering and 35 km/h limit enforced.",
+    level: "SAFE_ZONE",
+    colorHex: "#06b6d4",
     activeIncidentsCount: 0
   }
 ];

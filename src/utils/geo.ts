@@ -17,6 +17,41 @@ export interface DestinationPreset {
 
 export const DESTINATION_PRESETS: DestinationPreset[] = [
   {
+    name: "Hyderabad & Telangana Hill Corridors",
+    country: "India",
+    flag: "🇮🇳",
+    coords: [17.3850, 78.4867],
+    emergencyNumbers: {
+      general: "112",
+      police: "100",
+      ambulance: "108",
+      touristPolice: "+91 40 2785 2408",
+      embassyEmergency: "112"
+    },
+    geofences: [
+      {
+        id: "hyd-geo-1",
+        name: "Ananthagiri Hills Ghat Pass & Hairpin Radar",
+        type: "ACCIDENT_PRONE",
+        center: [17.3115, 77.8654],
+        radiusMeters: 1400,
+        advisory: "Dense forest hairpin curves and sudden fog. Speed advisory 25 km/h.",
+        level: "WARNING",
+        colorHex: "#10b981"
+      },
+      {
+        id: "hyd-geo-2",
+        name: "Cyber Towers High-Risk Accident Zone",
+        type: "ACCIDENT_PRONE",
+        center: [17.4504, 78.3811],
+        radiusMeters: 750,
+        advisory: "High density peak collision risk.",
+        level: "CRITICAL",
+        colorHex: "#ef4444"
+      }
+    ]
+  },
+  {
     name: "Tokyo, Shibuya & Shinjuku",
     country: "Japan",
     flag: "🇯🇵",

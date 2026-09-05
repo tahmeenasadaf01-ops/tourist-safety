@@ -16,7 +16,8 @@ import {
   User, 
   ChevronDown,
   Menu,
-  X
+  X,
+  Home
 } from 'lucide-react';
 import { DashboardTab, UserRole } from '../types';
 
@@ -25,6 +26,7 @@ interface DashboardLayoutProps {
   onTabChange: (tab: DashboardTab) => void;
   onOpenReportModal: () => void;
   onLogout: () => void;
+  onReturnHome?: () => void;
   userEmail?: string;
   userName?: string;
   userRole?: UserRole;
@@ -38,6 +40,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   onTabChange,
   onOpenReportModal,
   onLogout,
+  onReturnHome,
   userEmail = 'tahmeenasadaf01@gmail.com',
   userName = 'Tahmeena Sadaf',
   userRole = 'DISPATCH_OFFICER',
@@ -115,6 +118,19 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         {/* Right Controls & Profile */}
         <div className="flex items-center gap-3">
           
+          {/* Return to Public Portal / Home */}
+          {onReturnHome && (
+            <button
+              id="command-bar-home-btn"
+              onClick={onReturnHome}
+              className="px-3 py-1.5 rounded-lg bg-emerald-950/70 hover:bg-emerald-900/80 text-emerald-300 border border-emerald-800/80 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm"
+              title="Return to Public Safety Portal"
+            >
+              <Home className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="hidden sm:inline">Public Portal</span>
+            </button>
+          )}
+
           {/* Emergency Report CTA */}
           <button
             id="command-bar-report-btn"

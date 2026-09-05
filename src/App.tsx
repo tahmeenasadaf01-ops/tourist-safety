@@ -19,6 +19,7 @@ import { EmergencyAlertsView } from './components/EmergencyAlertsView';
 import { AnalyticsView } from './components/AnalyticsView';
 import { ReportAccidentModal } from './components/ReportAccidentModal';
 import { AuthGateModal } from './components/AuthGateModal';
+import { SOSBeaconModal } from './components/SOSBeaconModal';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { 
   INITIAL_HYDERABAD_INCIDENTS, 
@@ -26,6 +27,8 @@ import {
   INITIAL_EMERGENCY_ALERTS 
 } from './data/hyderabadInitialData';
 import { HYDERABAD_GEOFENCES } from './utils/hyderabadGeo';
+import { DESTINATION_PRESETS } from './utils/geo';
+import { LocationData, TouristProfile, SOSTriggerMode } from './types';
 import { supabase } from './lib/supabase';
 import { blockchainService } from './services/blockchain';
 
@@ -50,6 +53,75 @@ function AppContent() {
   const [isAuthGateOpen, setIsAuthGateOpen] = useState<boolean>(false);
   const [authGateAction, setAuthGateAction] = useState<string>('Command Center Access');
   const [isReportModalOpen, setIsReportModalOpen] = useState<boolean>(false);
+  const [isSOSModalOpen, setIsSOSModalOpen] = useState<boolean>(false);
+  const [activeSOS, setActiveSOS] = useState<boolean>(false);
+
+  // Default tourist & location state for SOS beacon
+  const defaultLocation: LocationData = {
+    latitude: 17.3115,
+    longitude: 77.8654,
+    altitude: 710,
+    accuracy: 4.8,
+    speed: 0,
+    heading: 90,
+    timestamp: Date.now(),
+    addressName: "Ananthagiri Hills Ghat Road, Vikarabad, Telangana",
+    batteryLevel: 91,
+    networkSignal: '5G'
+  };
+
+  const defaultProfile: TouristProfile = {
+    id: 'TOURIST-HYD-01',
+    fullName: user?.user_metadata?.full_name || user?.email || 'Tahmeena Sadaf',
+    nationality: 'Indian',
+    passportId: '0x9a8b7c6d5e4f3a2b1c0d',
+    currentCity: 'Hyderabad',
+    country: 'India',
+    bloodType: 'O+',
+    allergies: 'None',
+    medicalConditions: 'None',
+    hotelAccommodation: 'Hill View Eco-Resort Vikarabad, Room 304',
+    emergencyContacts: [
+      {
+        id: 'ec-1',
+        name: 'Hyderabad Emergency CAD',
+        relationship: 'Official Response Service',
+        phone: '112 / +91 40 2785 2408',
+        isPrimary: true
+      }
+    ],
+    insurancePolicyId: 'TS-SAFE-9921',
+    isTrackingActive: true,
+    deadManTimerMinutes: 0,
+    lastCheckInTimestamp: Date.now()
+  };
+
+  const handleTriggerSOS = async (mode: SOSTriggerMode, notes?: string) => {
+    setActiveSOS(true);
+    const sosReport: IncidentReport = {
+      id: `SOS-HYD-${Date.now().toString().slice(-4)}`,
+      touristName: defaultProfile.fullName,
+      category: 'MEDICAL_EMERGENCY',
+      severity: 'CRITICAL',
+      title: `EMERGENCY SOS DISTRESS TRIGGER: ${mode}`,
+      description: notes || `Instant high-priority emergency distress beacon triggered at ${defaultLocation.addressName}. First responders and ambulance dispatched.`,
+      locationName: defaultLocation.addressName,
+      coordinates: [defaultLocation.latitude, defaultLocation.longitude],
+      mediaUrls: [],
+      timestamp: Date.now(),
+      status: 'DISPATCHED',
+      numInjured: 1,
+      vehiclesInvolved: 1,
+      emergencyRequired: true,
+      geofenceTriggered: true,
+      geofenceName: "Ananthagiri Hills Ghat Road & Misty Hairpin Zone",
+      responderNotes: `Emergency CAD dispatch unit HYD-PARAMEDIC-01 mobilized with ETA 4 minutes.`
+    };
+
+    const seal = await blockchainService.sealIncidentRecord(sosReport);
+    sosReport.blockchainSeal = seal;
+    handleReportSubmitted(sosReport);
+  };
 
   // If user becomes authenticated, smoothly grant access to command center
   useEffect(() => {
@@ -237,6 +309,8 @@ function AppContent() {
             handleEnterCommandCenter();
             setActiveTab('MAP');
           }}
+          onOpenSOSModal={() => setIsSOSModalOpen(true)}
+          onSimulateIncident={handleSimulateRandomIncident}
           isAuthenticated={isAuthenticated}
           userDisplayName={user?.user_metadata?.full_name || user?.email || 'Authorized Officer'}
           activeIncidentsCount={incidents.filter(i => i.status !== 'RESOLVED').length}
@@ -248,6 +322,7 @@ function AppContent() {
           onTabChange={setActiveTab}
           onOpenReportModal={() => setIsReportModalOpen(true)}
           onLogout={handleLogoutToLanding}
+          onReturnHome={() => setInCommandCenter(false)}
           userEmail={user?.email || 'tahmeenasadaf01@gmail.com'}
           userName={user?.user_metadata?.full_name || 'Tahmeena Sadaf'}
           userRole={userRole}
@@ -359,6 +434,18 @@ function AppContent() {
         onClose={() => setIsReportModalOpen(false)}
         onReportSubmitted={handleReportSubmitted}
         userDisplayName={user?.user_metadata?.full_name || user?.email || 'Tahmeena Sadaf'}
+      />
+
+      {/* SOS Distress Beacon Modal */}
+      <SOSBeaconModal
+        isOpen={isSOSModalOpen}
+        onClose={() => setIsSOSModalOpen(false)}
+        currentLocation={defaultLocation}
+        touristProfile={defaultProfile}
+        selectedPreset={DESTINATION_PRESETS[0]}
+        onTriggerSOS={handleTriggerSOS}
+        activeSOS={activeSOS}
+        onCancelActiveSOS={() => setActiveSOS(false)}
       />
     </>
   );

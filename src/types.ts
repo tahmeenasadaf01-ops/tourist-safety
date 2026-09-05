@@ -114,6 +114,7 @@ export type GeofenceType =
   | 'HIGH_CRIME_AREA'
   | 'SAFE_HAVEN_EMBASSY'
   | 'MEDICAL_POST'
+  | 'SAFE_ZONE'
   | 'WILDLIFE_HAZARD';
 
 export interface GeofenceZone {
