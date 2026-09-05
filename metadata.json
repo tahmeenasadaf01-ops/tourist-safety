@@ -1,0 +1,6 @@
+{
+  "name": "Tourist Safety & Emergency SOS Command",
+  "description": "Enterprise-grade tourist safety monitoring, real-time AES-256 encrypted location tracking, emergency SOS alerts, and incident response dispatch system.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
