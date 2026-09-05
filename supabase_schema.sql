@@ -13,6 +13,23 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- -------------------------------------------------------------------------
+-- 0. CLEANUP PREVIOUS/LEGACY CONFLICTING TABLES & POLICIES (V1 -> V2 UPGRADE)
+-- -------------------------------------------------------------------------
+-- Ensures all tables are cleanly initialized with Hyderabad V2 columns
+-- without "column does not exist" or "policy already exists" conflicts.
+DROP TABLE IF EXISTS public.blockchain_records CASCADE;
+DROP TABLE IF EXISTS public.emergency_alerts CASCADE;
+DROP TABLE IF EXISTS public.incident_reports CASCADE;
+DROP TABLE IF EXISTS public.police_units CASCADE;
+DROP TABLE IF EXISTS public.geofence_zones CASCADE;
+DROP TABLE IF EXISTS public.users CASCADE;
+
+-- Optional legacy v1 table cleanup
+DROP TABLE IF EXISTS public.sos_alerts CASCADE;
+DROP TABLE IF EXISTS public.telemetry_logs CASCADE;
+DROP TABLE IF EXISTS public.tourist_profiles CASCADE;
+
+-- -------------------------------------------------------------------------
 -- 1. USERS & ACCESS CONTROL TABLE
 -- -------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS public.users (
@@ -147,16 +164,37 @@ ALTER TABLE public.blockchain_records ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.emergency_alerts ENABLE ROW LEVEL SECURITY;
 
 -- Allow authenticated and anon access for CAD command operations and public reporting
+DROP POLICY IF EXISTS "Allow public read access to geofence zones" ON public.geofence_zones;
 CREATE POLICY "Allow public read access to geofence zones" ON public.geofence_zones FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Allow read access to police units" ON public.police_units;
 CREATE POLICY "Allow read access to police units" ON public.police_units FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Allow update to police units" ON public.police_units;
 CREATE POLICY "Allow update to police units" ON public.police_units FOR ALL USING (true);
+
+DROP POLICY IF EXISTS "Allow public read access to incident reports" ON public.incident_reports;
 CREATE POLICY "Allow public read access to incident reports" ON public.incident_reports FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Allow public insert of accident reports" ON public.incident_reports;
 CREATE POLICY "Allow public insert of accident reports" ON public.incident_reports FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow update of incident reports" ON public.incident_reports;
 CREATE POLICY "Allow update of incident reports" ON public.incident_reports FOR UPDATE USING (true);
+
+DROP POLICY IF EXISTS "Allow read access to blockchain records" ON public.blockchain_records;
 CREATE POLICY "Allow read access to blockchain records" ON public.blockchain_records FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Allow insert of blockchain records" ON public.blockchain_records;
 CREATE POLICY "Allow insert of blockchain records" ON public.blockchain_records FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow read access to emergency alerts" ON public.emergency_alerts;
 CREATE POLICY "Allow read access to emergency alerts" ON public.emergency_alerts FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Allow update of emergency alerts" ON public.emergency_alerts;
 CREATE POLICY "Allow update of emergency alerts" ON public.emergency_alerts FOR UPDATE USING (true);
+
+DROP POLICY IF EXISTS "Allow read write on users" ON public.users;
 CREATE POLICY "Allow read write on users" ON public.users FOR ALL USING (true);
 
 -- -------------------------------------------------------------------------

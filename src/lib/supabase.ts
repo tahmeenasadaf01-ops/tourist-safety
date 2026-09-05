@@ -20,7 +20,7 @@ export const supabase: SupabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON
 export async function testSupabaseConnection(): Promise<{ success: boolean; message: string }> {
   try {
     // Attempt a lightweight ping on database
-    const { data, error } = await supabase.from('sos_alerts').select('id').limit(1);
+    const { data, error } = await supabase.from('incident_reports').select('id').limit(1);
     if (error) {
       // Table might not exist yet or connection is active
       return { 

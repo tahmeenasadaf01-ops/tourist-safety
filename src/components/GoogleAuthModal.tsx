@@ -276,23 +276,23 @@ export const GoogleAuthModal: React.FC<GoogleAuthModalProps> = ({ isOpen, onClos
 
             {/* Sync Capabilities */}
             <div className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-4">
-              <h4 className="text-xs font-bold text-white mb-2">Synchronized PostgreSQL Tables</h4>
+              <h4 className="text-xs font-bold text-white mb-2">Synchronized PostgreSQL Tables (Hyderabad V2)</h4>
               <div className="grid grid-cols-2 gap-2 text-[11px] font-mono">
                 <div className="rounded-lg bg-neutral-950 p-2 border border-neutral-800">
-                  <span className="text-rose-400 font-bold">public.sos_alerts</span>
-                  <p className="text-[10px] text-neutral-500 font-sans mt-0.5">Distress triggers, timestamps, status</p>
+                  <span className="text-rose-400 font-bold">public.incident_reports</span>
+                  <p className="text-[10px] text-neutral-500 font-sans mt-0.5">Accidents, severity, lat/lng, blockchain hash</p>
                 </div>
                 <div className="rounded-lg bg-neutral-950 p-2 border border-neutral-800">
-                  <span className="text-amber-400 font-bold">public.incident_reports</span>
-                  <p className="text-[10px] text-neutral-500 font-sans mt-0.5">Theft, medical, wilderness logs</p>
+                  <span className="text-amber-400 font-bold">public.police_units</span>
+                  <p className="text-[10px] text-neutral-500 font-sans mt-0.5">Cyberabad CAD dispatch & GPS fleet units</p>
                 </div>
                 <div className="rounded-lg bg-neutral-950 p-2 border border-neutral-800">
-                  <span className="text-emerald-400 font-bold">public.telemetry_logs</span>
-                  <p className="text-[10px] text-neutral-500 font-sans mt-0.5">AES-256 encrypted location packets</p>
+                  <span className="text-emerald-400 font-bold">public.geofence_zones</span>
+                  <p className="text-[10px] text-neutral-500 font-sans mt-0.5">High collision corridors & speed perimeters</p>
                 </div>
                 <div className="rounded-lg bg-neutral-950 p-2 border border-neutral-800">
-                  <span className="text-sky-400 font-bold">public.tourist_profiles</span>
-                  <p className="text-[10px] text-neutral-500 font-sans mt-0.5">Medical tags & emergency contacts</p>
+                  <span className="text-sky-400 font-bold">public.blockchain_records</span>
+                  <p className="text-[10px] text-neutral-500 font-sans mt-0.5">Cryptographic SHA-256 sealed audit blocks</p>
                 </div>
               </div>
             </div>
