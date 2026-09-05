@@ -3,8 +3,47 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AegisGuard | Tourist Safety & SOS Command System</title>
+    <script>
+      (function() {
+        try {
+          var originalFetch = window.fetch ? window.fetch.bind(window) : undefined;
+          var activeFetch = originalFetch;
+          
+          var fetchDescriptor = {
+            get: function() {
+              return activeFetch;
+            },
+            set: function(fn) {
+              activeFetch = fn;
+            },
+            configurable: true,
+            enumerable: true
+          };
+
+          try {
+            Object.defineProperty(window, 'fetch', fetchDescriptor);
+          } catch (e) {}
+
+          if (typeof Window !== 'undefined' && Window.prototype) {
+            try {
+              Object.defineProperty(Window.prototype, 'fetch', fetchDescriptor);
+            } catch (e) {}
+          }
+
+          if (typeof globalThis !== 'undefined' && globalThis !== window) {
+            try {
+              Object.defineProperty(globalThis, 'fetch', fetchDescriptor);
+            } catch (e) {}
+          }
+        } catch (err) {
+          console.warn('Fetch setter initialization warning:', err);
+        }
+      })();
+    </script>
+    <title>Tourist Safety & Emergency SOS Command</title>
     <meta name="description" content="Enterprise-grade tourist safety monitoring, real-time AES-256 encrypted location tracking, emergency SOS alerts, and incident response dispatch system." />
+    <meta property="og:title" content="Tourist Safety & Emergency SOS Command" />
+    <meta property="og:description" content="Enterprise-grade tourist safety monitoring, real-time AES-256 encrypted location tracking, emergency SOS alerts, and incident response dispatch system." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
